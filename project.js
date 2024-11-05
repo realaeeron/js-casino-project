@@ -9,7 +9,7 @@
 // Permet de demander une valeur à l'utilisateur
 const prompt = require("prompt-sync")();
 
-// Étape 1
+// Step 1
 const deposit = () => {
   while (true) {
     const depositAmount = prompt("Enter a deposit ammount : ");
@@ -24,22 +24,41 @@ const deposit = () => {
   }
 };
 
-const depositAmount = deposit();
-
-// Étape 2
+// Step 2
 
 const getNumberOfLines = () => {
   while (true) {
-    const numberOfLines = prompt("On how many lines you want to bet ?: ");
-    const lines = parseFloat(numberOfLines);
+    const lines = prompt("On how many lines you want to bet ? (1-3): ");
+    const numberOfLines = parseFloat(lines);
 
-    if (isNaN(lines) || lines <= 0 || lines > 3) {
+    if (isNaN(numberOfLines) || numberOfLines <= 0 || numberOfLines > 3) {
       console.log("Invalid number of lines, try again !");
     } else {
-      console.log(`You bet on ${lines} lines`);
-      return lines;
+      console.log(`You bet on ${numberOfLines} lines`);
+      return numberOfLines;
     }
   }
 };
 
-const numberOfLines = getNumberOfLines();
+// Step 3
+
+const getBet = (balance, lines) => {
+  while (true) {
+    const bet = prompt("Enter bet per line: ");
+    const numberBet = parseFloat(bet);
+    const maximumBet = balance / lines;
+
+    if (isNaN(numberBet) || numberBet < 0 || numberBet > balance / lines) {
+      console.log(`Enter a valid bet ammount, try again ! (you can only bet ${maximumBet}$ for ${lines} lines)`);
+    } else {
+      console.log(`You bet ${numberBet}$, good luck !`);
+      return numberBet;
+    }
+  }
+};
+
+// Function call, the function has to be above this:
+let balance = deposit();
+const lines = getNumberOfLines();
+// Call balance parameter in this function
+const bet = getBet(balance, lines);
